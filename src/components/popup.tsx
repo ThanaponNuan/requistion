@@ -38,17 +38,17 @@ const Popup: React.FC<PopupProps> = ({
 
         <ModalFooter>
           {location.pathname.includes("add") && (
-            <Button colorScheme="blue" mr={3} onClick={onContinue}>
+            <Button variant="ghost" mr={3} onClick={onContinue}>
               Continue Adding
             </Button>
           )}
           {location.pathname.includes("edit") && (
-            <Button colorScheme="blue" mr={3} onClick={onContinue}>
+            <Button variant="ghost" mr={3} onClick={onContinue}>
               Continue Editing
             </Button>
           )}
-          <Button variant="ghost" onClick={onBack}>
-            Go Back to Type Page
+          <Button colorScheme="blue" onClick={onBack}>
+            Done
           </Button>
         </ModalFooter>
       </ModalContent>

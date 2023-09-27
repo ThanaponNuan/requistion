@@ -13,30 +13,24 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-//CarDetail information
-const CarDetailpage = () => {
-  //interface
-  interface CarDetailItems {
-    car_detail_id: number;
-    eqtype_id: {
-      description: string;
-    };
-    car_id: {
-      car_model: string;
-    };
-    detail: string;
-    status: string;
-    price: string;
-  }
-  //usestate ,Navigate
-  const [data, setData] = useState<CarDetailItems[]>([]);
-  const navigate = useNavigate();
 
-  //default request conf
+const Carpage = () => {
+  //usestate ,navigate
+  const [data, setData] = useState<CarItems[]>([]);
+  const navigate = useNavigate();
+  
+  //interface
+  interface CarItems {
+    id: number;
+    car_description: string;
+    car_model: string;
+    status: string;
+  }
+  // default request conf
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: "http://cobalt.npsystems.net/items/car_detail?fields[]=car_detail_id,status,detail,price,car_id.car_model,eqtype_id.description&sort=car_detail_id",
+    url: "http://cobalt.npsystems.net/items/car/",
     headers: {
       Authorization: "Bearer pZKh0ziXNkz9A70XPoZrqiqIH1xdMHBx",
     },
@@ -49,10 +43,12 @@ const CarDetailpage = () => {
 
   async function makeRequest() {
     try {
-      const response: AxiosResponse<{ data: CarDetailItems[] }> =
-        await axios.request(config);
-      const responseData: CarDetailItems[] = response.data.data;
+      const response: AxiosResponse<{ data: CarItems[] }> = await axios.request(
+        config
+      );
+      const responseData: CarItems[] = response.data.data;
       setData(responseData);
+      console.log(responseData);
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +64,7 @@ const CarDetailpage = () => {
         const deleteConfig = {
           ...config,
           method: "delete",
-          url: `http://cobalt.npsystems.net/items/car_detail/${id}`,
+          url: `http://cobalt.npsystems.net/items/car/${id}`,
         };
         await axios.request(deleteConfig);
         alert("Remove successful");
@@ -80,27 +76,23 @@ const CarDetailpage = () => {
     }
   };
 
-  const CarDetailshow = ({
-    car_detail_id,
-    eqtype_id,
-    detail,
+  //Car information
+  const Carshow = ({
+    id,
+    car_model,
+    car_description,
     status,
-    price,
-    car_id,
-  }: CarDetailItems) => {
+  }: CarItems) => {
     return (
       <Tr>
-        <Td width={{ base: "15%" }}>{car_id.car_model}</Td>
-        <Td width={{ base: "25%" }}>{detail}</Td>
-        <Td width={{ base: "10%" }}>{eqtype_id.description}</Td>
-        <Td width={{ base: "25%" }}>{price}</Td>
+        <Td width={{ base: "15%" }}>{id}</Td>
+        <Td width={{ base: "25%" }}>{car_model}</Td>
+        <Td width={{ base: "25%" }}>{car_description}</Td>
         <Td width={{ base: "15%" }}>{status}</Td>
         <Td width={{ base: "10%" }}>
           <ButtonGroup justifySelf="center">
-            <Button onClick={() => navigate(`edit/${car_detail_id}`)}>
-              Edit
-            </Button>
-            <Button onClick={() => handleRemove(car_detail_id)}>Remove</Button>
+            <Button onClick={() => navigate(`edit/${id}`)}>Edit</Button>
+            <Button onClick={() => handleRemove(id)}>Remove</Button>
           </ButtonGroup>
         </Td>
       </Tr>
@@ -112,10 +104,9 @@ const CarDetailpage = () => {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th width={{ base: "20%" }}>Car Model</Th>
-            <Th width={{ base: "20%" }}>Detail</Th>
+            <Th width={{ base: "20%" }}>ID</Th>
+            <Th width={{ base: "20%" }}>Model</Th>
             <Th width={{ base: "10%" }}>Description</Th>
-            <Th width={{ base: "20%" }}>Price</Th>
             <Th width={{ base: "15%" }}>Status</Th>
             <Th textAlign={"center"} width={{ base: "15%" }}>
               Actions
@@ -124,14 +115,12 @@ const CarDetailpage = () => {
         </Thead>
         <Tbody>
           {data.map((item) => (
-            <CarDetailshow
-              key={item.car_detail_id}
-              car_detail_id={item.car_detail_id}
-              eqtype_id={item.eqtype_id}
-              car_id={item.car_id}
-              detail={item.detail}
+            <Carshow
+              key={item.id}
+              id={item.id}
+              car_model={item.car_model}
+              car_description={item.car_description}
               status={item.status}
-              price={item.price}
             />
           ))}
         </Tbody>
@@ -140,4 +129,4 @@ const CarDetailpage = () => {
   );
 };
 
-export default CarDetailpage;
+export default Carpage;

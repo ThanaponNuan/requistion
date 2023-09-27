@@ -1,10 +1,7 @@
 import { Button, Box, Heading, Stack, Center } from "@chakra-ui/react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 
-
-
-//layout
-function CarDetailLayout() {
+function CarLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -12,22 +9,22 @@ function CarDetailLayout() {
     <Center>
       <Stack direction={{ base: "column" }} minW="70%">
         <Stack direction={{ base: "row" }}>
-        {location.pathname.endsWith("car-details")&& (
+        {location.pathname.endsWith("car")&& (
           <>
-            <Heading>Car Details</Heading>
-            <Button width={"100px"} marginLeft="auto" onClick={() => navigate("/car-details/add")}>
+            <Heading>Car</Heading>
+            <Button width={"100px"} marginLeft="auto" onClick={() => navigate("/car/add")}>
               Add
             </Button>
           </>
         )}
         {location.pathname.endsWith("add")&& (
           <>
-            <Heading>Add Car Detail</Heading>
+            <Heading>Add Car</Heading>
           </>
         )}
         {location.pathname.endsWith("Edit Type id")&& (
           <>
-            <Heading>Edit Car Detail</Heading>
+            <Heading>Edit Car </Heading>
           </>
         )}
         </Stack>
@@ -39,4 +36,4 @@ function CarDetailLayout() {
   );
 }
 
-export default CarDetailLayout;
+export default CarLayout;

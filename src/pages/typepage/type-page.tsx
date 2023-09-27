@@ -14,31 +14,38 @@ import {
 import { useNavigate } from "react-router-dom";
 
 
-let config = {
-  method: "get",
-  maxBodyLength: Infinity,
-  url: "http://cobalt.npsystems.net/items/eqtype/",
-  headers: {
-    Authorization: "Bearer pZKh0ziXNkz9A70XPoZrqiqIH1xdMHBx",
-  },
-};
-
-interface ItemType {
-  id: number;
-  description: string;
-  status: string;
-}
-
 const Typepage = () => {
+  //usestate ,navigate
   const [data, setData] = useState<ItemType[]>([]);
   const navigate = useNavigate();
   useEffect(() => {
     makeRequest();
   }, []);
 
+  //interface
+  interface ItemType {
+    id: number;
+    description: string;
+    status: string;
+  }
+  
+
+  //default request conf
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "http://cobalt.npsystems.net/items/eqtype/?sort=id",
+    headers: {
+      Authorization: "Bearer pZKh0ziXNkz9A70XPoZrqiqIH1xdMHBx",
+    },
+  };
+
+  //default request
   async function makeRequest() {
     try {
-      const response: AxiosResponse<{ data: ItemType[] }> = await axios.request(config);
+      const response: AxiosResponse<{ data: ItemType[] }> = await axios.request(
+        config
+      );
       const responseData: ItemType[] = response.data.data;
       console.log(JSON.stringify(responseData));
       const updatedData = responseData.map(({ id, description, status }) => ({
@@ -52,8 +59,11 @@ const Typepage = () => {
     }
   }
 
+  //remove button handle 
   const handleRemove = async (id: number) => {
-    const confirmRemove = window.confirm("Are you sure you want to remove this item?");
+    const confirmRemove = window.confirm(
+      "Are you sure you want to remove this item?"
+    );
     if (confirmRemove) {
       try {
         const deleteConfig = {
@@ -73,6 +83,7 @@ const Typepage = () => {
     }
   };
 
+  //eqtype information page
   const Typeshow = ({ id, description, status }: ItemType) => {
     return (
       <Tr>

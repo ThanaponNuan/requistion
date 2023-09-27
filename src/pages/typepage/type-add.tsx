@@ -14,16 +14,16 @@ import Popup from "../../components/popup";
 import { useNavigate } from "react-router-dom";
 
 function TypeAdd() {
+  //usestate, navigate
   const navigate = useNavigate();
-
   const [showPopup, setShowPopup] = useState(false);
   const [result, setResult] = useState("");
-
   const [formData, setFormData] = useState({
     description: "",
     status: "Active",
   });
 
+  //form handle
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -33,6 +33,7 @@ function TypeAdd() {
     }));
   };
 
+  //add button handle
   const handleSubmit = async () => {
     if (!formData.description) {
       setResult("Failed: Description field is required");
@@ -64,6 +65,7 @@ function TypeAdd() {
     }
   };
 
+  //popup handle
   const handlePopupClose = () => {
     setShowPopup(false);
     setFormData({
@@ -71,11 +73,9 @@ function TypeAdd() {
       status: "Active",
     });
   };
-
   const handleBack = () => {
     navigate("/type");
   };
-
   const handleContinue = () => {
     setShowPopup(false);
     setFormData({

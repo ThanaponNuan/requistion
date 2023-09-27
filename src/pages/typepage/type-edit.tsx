@@ -15,19 +15,19 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function TypeAdd() {
   let { id } = useParams();
+  //usestate , navigate
   const navigate = useNavigate();
   useEffect(() => {
     setDefault();
   }, []);
-
   const [showPopup, setShowPopup] = useState(false);
   const [result, setResult] = useState("");
-
   const [formData, setFormData] = useState({
     description: "",
     status: "Active",
   });
 
+  //form handle
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -37,6 +37,7 @@ function TypeAdd() {
     }));
   };
 
+  //default request
   const setDefault = async () => {
     let config = {
       method: "get",
@@ -58,6 +59,8 @@ function TypeAdd() {
       console.log(error);
     }
   };
+
+  //edit button handle
   const handleSubmit = async () => {
     if (!formData.description) {
       setResult("Failed: Description field is required");
@@ -75,28 +78,24 @@ function TypeAdd() {
           },
         }
       );
-
       setResult("Edit success");
       setShowPopup(true);
-
       console.log(JSON.stringify(response.data));
     } catch (error) {
       setResult("Edit fail");
       setShowPopup(true);
-
       console.log(error);
     }
   };
 
+  //popup handle
   const handlePopupClose = () => {
     setShowPopup(false);
     navigate("/type");
   };
-
   const handleBack = () => {
     navigate("/type");
   };
-
   const handleContinue = () => {
     setShowPopup(false);
     navigate(`/type/edit/${id}`);
